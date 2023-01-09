@@ -5,8 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -18,16 +19,26 @@ public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @NotNull
     private String nombre;
+    @NotNull
     private String correo;
+    @NotNull
     private String celular;
-    private String tipo_identificacion;
-    private String numero_identificacion;
+    @NotNull
+    private String tipoIdent;
+    @NotNull
+    private String numeroIdent;
+    @NotNull
     private String direccionMatriz;
+    @NotNull
     private String ciudadMatriz;
+    @NotNull
     private String provinciaMatriz;
 
 
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
-    private List<Direccion> direcciones = new ArrayList<Direccion>();
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "clienteId")
+    private Set<Direccion> direcciones = new HashSet<Direccion>();
 }

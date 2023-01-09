@@ -33,4 +33,7 @@ public class ClienteService {
         return repository.findByNombre(name);
     }
 
+    public Optional<Cliente> findByNumeroIdent(String num){
+        return repository.findByNumeroIdent(num);
+    }
 }

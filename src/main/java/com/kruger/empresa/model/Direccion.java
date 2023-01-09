@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,11 +16,12 @@ public class Direccion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @NotNull
     private String direccion;
+    @NotNull
     private String ciudad;
+    @NotNull
     private String provincia;
-
-    @ManyToOne()
-    @JoinColumn(name = "cliente_id", nullable = false)
-    private Cliente cliente;
+    @NotNull
+    private int clienteId;
 }
