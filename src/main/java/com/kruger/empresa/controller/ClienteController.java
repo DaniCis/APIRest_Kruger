@@ -31,17 +31,31 @@ public class ClienteController {
     }
 
     @RequestMapping(value = "/update/{id}", method=RequestMethod.PUT, produces = "application/json"  )
-    public Cliente edit(@PathVariable Integer id, @RequestBody Cliente entity) {
-        return service.save(entity);
+    public ResponseEntity<?> edit(@PathVariable Integer id, @RequestBody Cliente entity) {
+        Optional<Cliente> existe = service.findByNumeroIdent(entity.getNumeroIdent());
+        if(existe.isPresent()){
+            return conflict();
+        }
+        Optional<Cliente> opt = service.findById(id);
+        if(opt.isPresent()){
+            Cliente actualizar = service.findById(id).get();
+            actualizar.setNombre(entity.getNombre());
+            actualizar.setCelular(entity.getCelular());
+            actualizar.setNumeroIdent(entity.getNumeroIdent());
+            actualizar.setTipoIdent(entity.getTipoIdent());
+            actualizar.setCorreo(entity.getCorreo());
+            return ResponseEntity.ok(service.save(actualizar));
+        }else {
+            return notFound();
+        }
     }
 
-    @RequestMapping(value = "/delete/{id}", method=RequestMethod.DELETE, produces = "application/json"  )
-    public String delete(@PathVariable Integer id) {
+    @RequestMapping(value = "/delete/{id}", method=RequestMethod.DELETE, produces = "application/json")
+    public void delete(@PathVariable Integer id) {
         service.deleteById(id);
-        return "Cliente elimnado con exito";
     }
 
-    @RequestMapping(value = "/findId/{id}", method=RequestMethod.GET, produces = "application/json"  )
+    @RequestMapping(value = "/findId/{id}", method=RequestMethod.GET, produces = "application/json")
     public ResponseEntity<?> findById(@PathVariable Integer id){
         Optional<Cliente> op =service.findById(id);
         if(!op.isPresent())
@@ -49,7 +63,7 @@ public class ClienteController {
         return ResponseEntity.ok(service.findById(id));
     }
 
-    @RequestMapping(value = "/findName/{name}", method=RequestMethod.GET, produces = "application/json"  )
+    @RequestMapping(value = "/findName/{name}", method=RequestMethod.GET, produces = "application/json" )
     public ResponseEntity<?> findByName(@PathVariable String name){
         Optional<Cliente> op = service.findByName(name);
         if(!op.isPresent())

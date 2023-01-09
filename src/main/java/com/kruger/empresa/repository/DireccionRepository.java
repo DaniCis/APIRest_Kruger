@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface DireccionRepository  extends CrudRepository<Direccion, Integer> {
-    Optional<Direccion> findByClienteId(Integer id);
+    Iterable<Direccion> findByClienteId(Integer id);
 }

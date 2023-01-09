@@ -20,7 +20,7 @@ public class DireccionService {
     public Direccion save(Direccion entity){
         return repository.save(entity);
     }
-    public Optional<Direccion> findByClienteId(Integer id){
+    public Iterable<Direccion> findByClienteId(Integer id){
         return repository.findByClienteId(id);
     }
     public void deleteById(Integer id){
